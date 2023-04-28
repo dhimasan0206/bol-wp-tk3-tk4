@@ -8,3 +8,5 @@
 4. `docker-compose exec myapp php artisan ui bootstrap --auth`
 5. `docker-compose exec myapp php artisan adminlte:install --only=auth_views`
 6. `docker-compose exec myapp php artisan adminlte:plugins install --plugin=icheckBootstrap`
+7. `docker-compose exec myapp npm install`
+8. `docker-compose exec myapp npm run dev` or `docker-compose exec myapp npm run build`
