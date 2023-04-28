@@ -14,3 +14,6 @@
 10. `docker-compose exec myapp php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"`
 11. `docker-compose exec myapp php artisan migrate:fresh`
 12. tambah `use Spatie\Permission\Traits\HasRoles;` ke `app/Models/User.php`
+13. `docker-compose exec myapp php artisan permission:create-role staff web "manage order|manage product|manage customer"`
+14. `docker-compose exec myapp php artisan permission:create-role admin web "manage product|manage user"`
+15. `docker-compose exec myapp php artisan permission:create-role customer web "create order"`
