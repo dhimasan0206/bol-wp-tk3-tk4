@@ -10,3 +10,7 @@
 6. `docker-compose exec myapp php artisan adminlte:plugins install --plugin=icheckBootstrap`
 7. `docker-compose exec myapp npm install`
 8. `docker-compose exec myapp npm run dev` or `docker-compose exec myapp npm run build`
+9. `docker-compose exec myapp composer require spatie/laravel-permission`
+10. `docker-compose exec myapp php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"`
+11. `docker-compose exec myapp php artisan migrate:fresh`
+12. tambah `use Spatie\Permission\Traits\HasRoles;` ke `app/Models/User.php`
