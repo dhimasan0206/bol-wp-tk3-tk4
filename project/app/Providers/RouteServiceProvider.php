@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::model('product', Product::class);
+        Route::model('user', User::class);
     }
 
     /**

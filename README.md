@@ -15,6 +15,9 @@
 11. tambah `use Spatie\Permission\Traits\HasRoles;` ke `app/Models/User.php`
 12. tambah permission, role dan user seeder di DatabaseSeeder
 13. `docker-compose exec myapp php artisan migrate:fresh --seed`
+14. `docker-compose exec myapp php artisan make:model Product -a`
+15. `docker-compose exec myapp php artisan make:controller UserController --model=User --resource --requests`
+16. `docker-compose exec myapp php artisan make:policy --model=User`
 
 ## local deployment
 
