@@ -295,7 +295,7 @@ return [
             'can'  => 'manage user',
             'submenu' => [
                 [
-                    'text' => 'Create',
+                    'text' => 'Add',
                     'url' => 'users/create'
                 ],
                 [
@@ -309,7 +309,7 @@ return [
             'can'  => 'manage customer',
             'submenu' => [
                 [
-                    'text' => 'Create',
+                    'text' => 'Add',
                     'url' => 'customers/create'
                 ],
                 [
@@ -323,7 +323,7 @@ return [
             'can'  => 'manage product',
             'submenu' => [
                 [
-                    'text' => 'Create',
+                    'text' => 'Add',
                     'url' => 'products/create'
                 ],
                 [
@@ -337,9 +337,9 @@ return [
             'can'  => ['manage order', 'create order'],
             'submenu' => [
                 [
-                    'text' => 'Create',
+                    'text' => 'Place Order',
                     'url' => 'orders/create',
-                    'can' => ['manage order', 'create order'],
+                    'can' => ['create order'],
                 ],
                 [
                     'text' => 'List',
