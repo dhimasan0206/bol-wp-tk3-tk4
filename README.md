@@ -17,7 +17,9 @@
 13. `docker-compose exec myapp php artisan migrate:fresh --seed`
 14. `docker-compose exec myapp php artisan make:model Product -a`
 15. `docker-compose exec myapp php artisan make:controller UserController --model=User --resource --requests`
-16. `docker-compose exec myapp php artisan make:policy --model=User`
+16. `docker-compose exec myapp php artisan make:policy UserPolicy --model=User`
+17. `docker-compose exec myapp php artisan make:controller CustomerController --model=User --resource --requests`
+18. `docker-compose exec myapp php artisan make:policy CustomerPolicy --model=User`
 
 ## local deployment
 

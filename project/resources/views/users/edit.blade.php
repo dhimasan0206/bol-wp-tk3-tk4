@@ -25,17 +25,25 @@
             {!! Form::label('email', 'Email', []) !!}
         </div>
         <div>
-            {!! Form::email('email') !!}
-            @error('email')
-                <div>{{ $message }}</div>
-            @enderror
+            {{ $user->email }}
         </div>
         <div>
             {!! Form::label('password', 'Password', []) !!}
         </div>
         <div>
-            {!! Form::password('password') !!}
+            {!! Form::password('password', null, []) !!}
             @error('password')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+        <div>
+            {!! Form::label('roles', 'Roles', []) !!}
+        </div>
+        <div>
+            @foreach ($roles as $role)
+                {!! Form::checkbox('roles[]', $role->name, $user->hasRole($role->name), ['id' => 'role__'.$role->name]) !!} {!! Form::label('role__'.$role->name, $role->name, []) !!}
+            @endforeach
+            @error('roles')
                 <div>{{ $message }}</div>
             @enderror
         </div>

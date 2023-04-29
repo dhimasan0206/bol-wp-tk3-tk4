@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Add New User')
+@section('title', 'Add New Customer')
 
 @section('content_header')
-    <h1>Add New User</h1>
+    <h1>Add New Customer</h1>
 @stop
 
 @section('content')
-    <form action="{{route('users.store')}}" method="POST">
+    <form action="{{route('customers.store')}}" method="POST">
         @csrf
         <div>
             {!! Form::label('name', 'Name', []) !!}
@@ -33,17 +33,6 @@
         <div>
             {!! Form::password('password', null, []) !!}
             @error('password')
-                <div>{{ $message }}</div>
-            @enderror
-        </div>
-        <div>
-            {!! Form::label('roles', 'Roles', []) !!}
-        </div>
-        <div>
-            @foreach ($roles as $role)
-                {!! Form::checkbox('roles[]', $role->name, false, ['id' => 'role__'.$role->name]) !!} {!! Form::label('role__'.$role->name, $role->name, []) !!}
-            @endforeach
-            @error('roles')
                 <div>{{ $message }}</div>
             @enderror
         </div>

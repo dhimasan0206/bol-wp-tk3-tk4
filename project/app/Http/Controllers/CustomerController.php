@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
@@ -29,7 +28,6 @@ class UserController extends Controller
             'ID',
             'Name',
             'Email',
-            'Role',
             'Actions'
         ];
         
@@ -45,15 +43,14 @@ class UserController extends Controller
         </form>';
         $btnDetails = '<a href=":route" class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
         $data = [];
-        foreach (User::all() as $user) {
+        foreach (User::role('customer')->get() as $user) {
             $data[] = [
                 $user->id,
                 $user->name,
                 $user->email,
-                $user->getRoleNames()->join(', '),
-                Auth::id() === $user->id ? "" : str_replace(":route", route("users.edit", ["user" => $user->id]), $btnEdit).
-                str_replace(":route", route("users.show", ["user" => $user->id]), $btnDetails).
-                str_replace(":route", route("users.destroy", ["user" => $user->id]), $btnDelete),
+                Auth::id() === $user->id ? "" : str_replace(":route", route("customers.edit", ['customer' => $user->id]), $btnEdit).
+                str_replace(":route", route("customers.show", ['customer' => $user->id]), $btnDetails).
+                str_replace(":route", route("customers.destroy", ['customer' => $user->id]), $btnDelete),
             ];
         }
         $config = [
@@ -61,7 +58,7 @@ class UserController extends Controller
             // 'order' => [[1, 'asc']],
             // 'columns' => [null, null, null, ['orderable' => false]],
         ];
-        return view('users.index', compact('heads', 'config'));
+        return view('customers.index', compact('heads', 'config'));
     }
 
     /**
@@ -73,9 +70,7 @@ class UserController extends Controller
     {
         Gate::authorize('create', User::class);
         
-        return view('users.create')->with([
-            'roles' => Role::all(),
-        ]);
+        return view('customers.create');
     }
 
     /**
@@ -84,7 +79,7 @@ class UserController extends Controller
      * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreCustomerRequest $request)
     {
         Gate::authorize('create', User::class);
 
@@ -96,9 +91,9 @@ class UserController extends Controller
             return redirect()->back()->withErrors('add user failed')->withInput();
         }
 
-        $user->syncRoles($request->roles);
+        $user->assignRole('customer');
 
-        return to_route('users.show', ['user' => $user->id]);
+        return to_route('customers.show', ['customer' => $user->id]);
     }
 
     /**
@@ -111,7 +106,7 @@ class UserController extends Controller
     {
         Gate::authorize('view', $user);
 
-        return view('users.show', ['user' => $user]);
+        return view('customers.show', ['user' => $user]);
     }
 
     /**
@@ -124,9 +119,8 @@ class UserController extends Controller
     {
         Gate::authorize('update', $user);
 
-        return view('users.edit', [
-            'user' => $user,
-            'roles' => Role::all(),
+        return view('customers.edit', [
+            'customer' => $user,
         ]);
     }
 
@@ -137,7 +131,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateCustomerRequest $request, User $user)
     {
         Gate::authorize('update', $user);
 
@@ -147,9 +141,9 @@ class UserController extends Controller
             return redirect()->back()->withErrors('update '.$user->id.' failed')->withInput();
         }
 
-        $user->syncRoles($request->roles);
+        $user->assignRole('customer');
 
-        return to_route('users.show', ['user' => $user]);
+        return to_route('customers.show', ['customer' => $user]);
     }
 
     /**
@@ -166,6 +160,6 @@ class UserController extends Controller
             return redirect()->back()->withErrors('delete '.$user->id.' failed')->withInput();
         }
 
-        return to_route('users.index');
+        return to_route('customers.index');
     }
 }
