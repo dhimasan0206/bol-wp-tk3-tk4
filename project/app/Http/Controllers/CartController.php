@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -54,6 +55,11 @@ class CartController extends Controller
             } else {
                 $cart->quantity = $request->quantity;
             }
+        }
+
+        $product = Product::findOrFail($request->product_id);
+        if ($product->stock < $cart->quantity) {
+            return redirect()->back()->withErrors($product->name.'\'s stock is not enough');
         }
 
         $cart->save();
