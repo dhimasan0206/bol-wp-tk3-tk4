@@ -20,6 +20,7 @@
 16. `docker-compose exec myapp php artisan make:policy UserPolicy --model=User`
 17. `docker-compose exec myapp php artisan make:controller CustomerController --model=User --resource --requests`
 18. `docker-compose exec myapp php artisan make:policy CustomerPolicy --model=User`
+19. `docker-compose exec myapp php artisan make:model Cart -a`
 
 ## local deployment
 

@@ -36,19 +36,24 @@ class ProductController extends Controller
             'Actions'
         ];
         
-        $btnAddToCart = '<a href=":route" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Add to Cart">
-                        <i class="fa fa-lg fa-fw fa-cart-plus"></i>
-                    </a>';
+        $btnAddToCart = '<form action=":route" method="POST">
+                            '.csrf_field().'
+                            <input type="hidden" name="product_id" value=":product_id">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Add to Cart">
+                                <i class="fa fa-lg fa-fw fa-cart-plus"></i>
+                            </button>
+                        </form>';
         $btnEdit = '<a href=":route" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                         <i class="fa fa-lg fa-fw fa-pen"></i>
                     </a>';
         $btnDelete = '<form action=":route" method="POST">
-            '.csrf_field().'
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
-                <i class="fa fa-lg fa-fw fa-trash"></i>
-            </button>
-        </form>';
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
+                            <i class="fa fa-lg fa-fw fa-trash"></i>
+                        </button>
+                    </form>';
         $btnDetails = '<a href=":route" class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
         $data = [];
         foreach (Product::all() as $product) {
@@ -63,7 +68,7 @@ class ProductController extends Controller
                 $product->selling_price,
                 $product->created_at,
                 $product->updated_at,
-                // str_replace(":route", "#", $btnAddToCart).
+                str_replace(":product_id", $product->id, str_replace(":route", route("carts.store"), $btnAddToCart)).
                 str_replace(":route", route("products.edit", ["product" => $product->id]), $btnEdit).
                 str_replace(":route", route("products.show", ["product" => $product->id]), $btnDetails).
                 str_replace(":route", route("products.destroy", ["product" => $product->id]), $btnDelete),
@@ -189,4 +194,5 @@ class ProductController extends Controller
 
         return to_route('products.index');
     }
+
 }
