@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CustomerPolicy
+class OrderItemPolicy
 {
     use HandlesAuthorization;
 
@@ -17,19 +18,19 @@ class CustomerPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, OrderItem $orderItem)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
@@ -40,54 +41,54 @@ class CustomerPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, OrderItem $orderItem)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, OrderItem $orderItem)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, OrderItem $orderItem)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, OrderItem $orderItem)
     {
-        return $user->hasPermissionTo('manage customer');
+        //
     }
 }

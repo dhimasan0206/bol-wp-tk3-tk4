@@ -320,15 +320,17 @@ return [
         ],
         [
             'text' => 'Product Management',
-            'can'  => 'manage product',
+            'can'  => ['manage product', 'create order'],
             'submenu' => [
                 [
                     'text' => 'Add',
-                    'url' => 'products/create'
+                    'url' => 'products/create',
+                    'can' => 'manage product',
                 ],
                 [
                     'text' => 'List',
                     'url' => 'products',
+                    'can' => ['manage product', 'create order'],
                 ],
             ],
         ],
@@ -337,7 +339,7 @@ return [
             'can'  => ['manage order', 'create order'],
             'submenu' => [
                 [
-                    'text' => 'Place Order',
+                    'text' => 'Cart',
                     'url' => 'orders/create',
                     'can' => ['create order'],
                 ],

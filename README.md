@@ -21,6 +21,8 @@
 17. `docker-compose exec myapp php artisan make:controller CustomerController --model=User --resource --requests`
 18. `docker-compose exec myapp php artisan make:policy CustomerPolicy --model=User`
 19. `docker-compose exec myapp php artisan make:model Cart -a`
+20. `docker-compose exec myapp php artisan make:model Order -a`
+21. `docker-compose exec myapp php artisan make:model OrderItem -a`
 
 ## local deployment
 
@@ -31,12 +33,20 @@
    1. Super Admin:
       1. email: super.admin@laravel.com
       2. password: superadmin1234
+      3. Bisa semuanya
    2. Admin:
       1. email: admin@laravel.com
       2. password: admin1234
+      3. Bisa manajemen user dan produk
    3. Staff
       1. email: staff@laravel.com
       2. password: staff1234
+      3. Bisa manajemen pembeli, produk, dan pesanan
    4. Customer:
       1. email: customer@laravel.com
       2. password: customer1234
+      3. Bisa membuat dan membatalkan pesanan
+5. Tambah produk sebagai admin atau staff
+6. Tambah produk ke keranjang sebagai customer
+7. Buat pesanan sebagai customer
+8. Selesaikan pesanan sebagai staff

@@ -46,25 +46,24 @@ class CartController extends Controller
             'user_id' => Auth::id(),
             'product_id' => $request->product_id,
         ], [
-            'quantity' => $request->quantity,
+            'quantity' => $request->delta,
         ]);
 
         if ($cart->exists) {
-            if ($request->headers->get('referer') == route('products.index')) {
-                $cart->increment('quantity');
-            } else {
-                $cart->quantity = $request->quantity;
+            $cart->quantity += $request->delta;
+            if ($cart->quantity <= 0) {
+                $cart->delete();
+                return to_route('orders.create');
             }
         }
 
-        $product = Product::findOrFail($request->product_id);
-        if ($product->stock < $cart->quantity) {
-            return redirect()->back()->withErrors($product->name.'\'s stock is not enough');
+        if ($cart->product->stock < $cart->quantity) {
+            return redirect()->back()->withErrors($cart->product->name.'\'s stock is not enough');
         }
 
         $cart->save();
 
-        return redirect()->back();
+        return to_route('orders.create');
     }
 
     /**
@@ -109,6 +108,10 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        if ($cart->delete()) {
+            return redirect()->back();
+        }
+
+        return redirect()->back()->withErrors('delete '.$cart->product->name.' failed');
     }
 }

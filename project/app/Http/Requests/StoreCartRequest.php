@@ -25,7 +25,7 @@ class StoreCartRequest extends FormRequest
     {
         return [
             'product_id' => ['required'],
-            'quantity' => ['required'],
+            'delta' => ['required'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -28,3 +29,6 @@ Route::resource('products', ProductController::class)->withTrashed(['show']);
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('carts', CartController::class);
+Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::post('/orders/{order}/fulfill', [OrderController::class, 'fulfill'])->name('orders.fulfill');
+Route::resource('orders', OrderController::class);

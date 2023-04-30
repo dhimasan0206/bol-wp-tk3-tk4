@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +20,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Product::class);
         $heads = [
@@ -39,7 +40,7 @@ class ProductController extends Controller
         $btnAddToCart = '<form action=":route" method="POST">
                             '.csrf_field().'
                             <input type="hidden" name="product_id" value=":product_id">
-                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="delta" value="1">
                             <button type="submit" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Add to Cart">
                                 <i class="fa fa-lg fa-fw fa-cart-plus"></i>
                             </button>
@@ -57,6 +58,15 @@ class ProductController extends Controller
         $btnDetails = '<a href=":route" class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details"><i class="fa fa-lg fa-fw fa-eye"></i></a>';
         $data = [];
         foreach (Product::all() as $product) {
+            $actions = '';
+            if ($request->user()->hasPermissionTo('create order')) {
+                $actions .= str_replace(":product_id", $product->id, str_replace(":route", route("carts.store"), $btnAddToCart));
+            }
+            if ($request->user()->hasPermissionTo('manage product')) {
+                $actions .= str_replace(":route", route("products.edit", ["product" => $product->id]), $btnEdit).
+                str_replace(":route", route("products.show", ["product" => $product->id]), $btnDetails).
+                str_replace(":route", route("products.destroy", ["product" => $product->id]), $btnDelete);
+            }
             $data[] = [
                 $product->id,
                 '<img src="'.Storage::url($product->image_url).'" alt="'.Storage::url($product->image_url).'" width="100">',
@@ -68,10 +78,7 @@ class ProductController extends Controller
                 $product->selling_price,
                 $product->created_at,
                 $product->updated_at,
-                str_replace(":product_id", $product->id, str_replace(":route", route("carts.store"), $btnAddToCart)).
-                str_replace(":route", route("products.edit", ["product" => $product->id]), $btnEdit).
-                str_replace(":route", route("products.show", ["product" => $product->id]), $btnDetails).
-                str_replace(":route", route("products.destroy", ["product" => $product->id]), $btnDelete),
+                $actions,
             ];
         }
         $config = [
