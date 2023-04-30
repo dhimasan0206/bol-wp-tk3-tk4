@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
-    public function __construct() {
+    public function __construct(Request $request) {
         $this->middleware('auth');
     }
 
@@ -20,9 +21,11 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        Gate::authorize('viewAny', User::class);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         $heads = [
             'ID',
@@ -66,10 +69,12 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        Gate::authorize('create', User::class);
-        
+    public function create(Request $request)
+    {   
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
+
         return view('customers.create');
     }
 
@@ -81,7 +86,9 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        Gate::authorize('create', User::class);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         $user = new User();
         $user->name = $request->name;
@@ -102,9 +109,11 @@ class CustomerController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        Gate::authorize('view', $user);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         return view('customers.show', ['user' => $user]);
     }
@@ -115,9 +124,11 @@ class CustomerController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
-        Gate::authorize('update', $user);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         return view('customers.edit', [
             'customer' => $user,
@@ -133,7 +144,9 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, User $user)
     {
-        Gate::authorize('update', $user);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         $user->name = $request->name;
         $user->password = Hash::make( $request->password);
@@ -152,9 +165,11 @@ class CustomerController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
-        Gate::authorize('delete', $user);
+        if (!$request->user()->hasPermissionTo('manage customer')) {
+            abort(403);
+        }
 
         if (!$user->delete()) {
             return redirect()->back()->withErrors('delete '.$user->id.' failed')->withInput();
