@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
-    public function __construct(Request $request) {
+    public function __construct() {
         $this->middleware('auth');
     }
 
