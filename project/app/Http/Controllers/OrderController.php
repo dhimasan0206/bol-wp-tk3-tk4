@@ -29,9 +29,11 @@ class OrderController extends Controller
     {
         $heads = [
             'ID',
+            'Date',
             'Status',
             'Total Items',
             'Total Price',
+            'Customer',
             'Actions',
         ];
 
@@ -56,9 +58,11 @@ class OrderController extends Controller
             }
             $data[] = [
                 $order->id,
+                $order->order_date,
                 $order->status,
                 $order->totalItems(),
                 $order->totalPrice(),
+                $order->customer->name,
                 $actions,
             ];
         }
@@ -170,6 +174,7 @@ class OrderController extends Controller
 
         $order = new Order();
         $order->user_id = Auth::id();
+        $order->order_date = now();
         $order->status = 'PENDING';
         if (!$order->save()) {
             DB::rollBack();

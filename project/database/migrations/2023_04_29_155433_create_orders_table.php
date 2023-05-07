@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'user_id')->nullable();
+            $table->timestamp('order_date');
             $table->string('status');
             $table->timestamp('fulfilled_at')->nullable();
             $table->timestamps();
