@@ -29,6 +29,7 @@ Route::resource('products', ProductController::class)->withTrashed(['show']);
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('carts', CartController::class);
+Route::get('orders/dashboard', [OrderController::class, 'dashboard'])->name('orders.dashboard');
 Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 Route::post('/orders/{order}/fulfill', [OrderController::class, 'fulfill'])->name('orders.fulfill');
 Route::resource('orders', OrderController::class);

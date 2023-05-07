@@ -297,4 +297,64 @@ class OrderController extends Controller
         DB::commit();
         return redirect()->back();
     }
+
+    public function dashboard()
+    {
+        $all_status = [];
+        $all_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->groupBy('status')->get() as $order) {
+            array_push($all_status, $order->status);
+            array_push($all_count, $order->order_count);
+        }
+
+        $daily_status = [];
+        $daily_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->whereRaw('DATE(order_date) = CURRENT_DATE()')->groupBy('status')->get() as $order) {
+            array_push($daily_status, $order->status);
+            array_push($daily_count, $order->order_count);
+        }
+
+        $weekly_status = [];
+        $weekly_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->whereRaw('DATE(order_date) <= CURRENT_DATE() AND YEAR(order_date) = YEAR(CURRENT_DATE()) AND WEEK(order_date) = WEEK(CURRENT_DATE())')->groupBy('status')->get() as $order) {
+            array_push($weekly_status, $order->status);
+            array_push($weekly_count, $order->order_count);
+        }
+
+        $monthly_status = [];
+        $monthly_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->whereRaw('DATE(order_date) <= CURRENT_DATE() AND YEAR(order_date) = YEAR(CURRENT_DATE()) AND MONTH(order_date) = MONTH(CURRENT_DATE())')->groupBy('status')->get() as $order) {
+            array_push($monthly_status, $order->status);
+            array_push($monthly_count, $order->order_count);
+        }
+
+        $quarterly_status = [];
+        $quarterly_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->whereRaw('DATE(order_date) <= CURRENT_DATE() AND YEAR(order_date) = YEAR(CURRENT_DATE()) AND QUARTER(order_date) = QUARTER(CURRENT_DATE())')->groupBy('status')->get() as $order) {
+            array_push($quarterly_status, $order->status);
+            array_push($quarterly_count, $order->order_count);
+        }
+
+        $yearly_status = [];
+        $yearly_count = [];
+        foreach (DB::table('orders')->select(DB::raw('count(*) as order_count, status'))->whereRaw('DATE(order_date) <= CURRENT_DATE() AND YEAR(order_date) = YEAR(CURRENT_DATE())')->groupBy('status')->get() as $order) {
+            array_push($yearly_status, $order->status);
+            array_push($yearly_count, $order->order_count);
+        }
+
+        return view('orders.dashboard', compact(
+            'all_status',
+            'all_count',
+            'daily_status',
+            'daily_count',
+            'weekly_status',
+            'weekly_count',
+            'monthly_status',
+            'monthly_count',
+            'quarterly_status',
+            'quarterly_count',
+            'yearly_status',
+            'yearly_count',
+        ));
+    }
 }

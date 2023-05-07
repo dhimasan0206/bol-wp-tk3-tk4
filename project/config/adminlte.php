@@ -348,6 +348,11 @@ return [
                     'url' => 'orders',
                     'can' => ['manage order', 'create order'],
                 ],
+                [
+                    'text' => 'Dashboard',
+                    'url' => 'orders/dashboard',
+                    'can' => ['manage order'],
+                ],
             ],
         ],
     ],
